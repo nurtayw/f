@@ -1,0 +1,38 @@
+services:
+  martel-mysql:
+    container_name: martel-mysql
+
+    image: mysql
+
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: dbteststore
+
+    networks:
+      - springboot-net
+    ports:
+      - "3360:3306"
+    volumes:
+      - mysql:/var/lib/mysql
+    
+  spring-teststore:
+
+    container_name: teststore
+
+    image: spring/teststore
+
+    ports:
+      - "8888:8080"
+
+    networks:
+      - springboot-net
+
+    depends_on:
+      - martel-mysql
+
+volumes:
+  mysql:
+
+networks:
+  springboot-net:
+    driver: bridge
